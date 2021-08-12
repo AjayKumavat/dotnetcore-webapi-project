@@ -20,22 +20,26 @@ namespace Project.Database.Infrastructure
         public virtual void Add(T entity)
         {
             ProjectContext.Add(entity);
+            ProjectContext.SaveChanges();
         }
 
         public virtual void Add(List<T> entity)
         {
             ProjectContext.AddRange(entity);
+            ProjectContext.SaveChanges();
         }
 
         public virtual void Delete(T entity)
         {
             ProjectContext.Set<T>().Remove(entity);
+            ProjectContext.SaveChanges();
         }
 
         public virtual void Update(T entity)
         {
             ProjectContext.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             ProjectContext.Set<T>().Update(entity);
+            ProjectContext.SaveChanges();
         }
 
         public virtual async Task<IEnumerable<T>> Get(Expression<Func<T, bool>> expression)

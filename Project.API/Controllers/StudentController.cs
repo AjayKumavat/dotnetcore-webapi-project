@@ -20,11 +20,47 @@ namespace Project.API.Controllers
 
         [HttpGet]
         [Route("GetStudents")]
-        [Produces(typeof(Student))]
+        [Produces(typeof(IEnumerable<Student>))]
         public async Task<IActionResult> GetStudents()
         {
             IEnumerable<Student> students = await _studentService.GetStudents();
             return Ok(students);
+        }
+
+        [HttpGet]
+        [Route("GetStudentById/{id}")]
+        [Produces(typeof(Student))]
+        public async Task<IActionResult> GetStudentById(int id)
+        {
+            Student student = await _studentService.GetStudentById(id);
+            return Ok(student);
+        }
+
+        [HttpPost]
+        [Route("AddStudent")]
+        [Produces(typeof(Student))]
+        public IActionResult AddStudent(Student student)
+        {
+            Student _student = _studentService.AddStudent(student);
+            return Ok(_student); 
+        }
+
+        [HttpPut]
+        [Route("UpdateStudent")]
+        [Produces(typeof(Student))]
+        public async Task<IActionResult> UpdateStudent(Student student)
+        {
+            Student _student = await _studentService.UpdateStudent(student);
+            return Ok(_student);
+        }
+
+        [HttpDelete]
+        [Route("DeleteStudent")]
+        [Produces(typeof(bool))]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            bool isDeleted = await _studentService.DeleteStudent(id);
+            return Ok(isDeleted);
         }
     }
 }
