@@ -19,7 +19,7 @@ namespace Project.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetStudents")]
+        [Route("Get")]
         [Produces(typeof(IEnumerable<Student>))]
         public async Task<IActionResult> GetStudents()
         {
@@ -28,7 +28,7 @@ namespace Project.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetStudentById/{id}")]
+        [Route("GetById/{id}")]
         [Produces(typeof(Student))]
         public async Task<IActionResult> GetStudentById(int id)
         {
@@ -37,7 +37,7 @@ namespace Project.API.Controllers
         }
 
         [HttpPost]
-        [Route("AddStudent")]
+        [Route("Add")]
         [Produces(typeof(Student))]
         public IActionResult AddStudent(Student student)
         {
@@ -46,7 +46,7 @@ namespace Project.API.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateStudent")]
+        [Route("Update")]
         [Produces(typeof(Student))]
         public async Task<IActionResult> UpdateStudent(Student student)
         {
@@ -55,7 +55,7 @@ namespace Project.API.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteStudent")]
+        [Route("Delete/{id}")]
         [Produces(typeof(bool))]
         public async Task<IActionResult> DeleteStudent(int id)
         {
