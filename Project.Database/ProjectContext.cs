@@ -16,5 +16,6 @@ namespace Project.Database
         }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<UserLogin> UserLogins { get; set; }
     }
 }

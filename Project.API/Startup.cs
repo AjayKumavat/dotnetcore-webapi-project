@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Project.Database;
 using Project.Database.Repositories;
@@ -13,6 +15,7 @@ using Project.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.API
@@ -34,8 +37,29 @@ namespace Project.API
 
             services.AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IUserService, UserService>()
+
                 .AddScoped<IStudentRepository, StudentRepository>()
-                .AddScoped<IStudentService, StudentService>();
+                .AddScoped<IStudentService, StudentService>()
+
+                .AddScoped<IAccountRepository, AccountRepository>()
+                .AddScoped<IAccountService, AccountService>()
+
+                .AddScoped<ITokenService, TokenService>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["JWT:ValidateIssuer"],
+                    ValidAudience = Configuration["JWT:ValidateAudience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:TokenKey"]))
+                };
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -55,6 +79,7 @@ namespace Project.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
